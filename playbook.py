@@ -311,7 +311,6 @@ section { scroll-margin-top: 56px; }
         <li>Mail Contacts</li>
         <li>Accepted Domains</li>
         <li>Mail-user forwarding (source) → removed at cutover</li>
-        <li>AD proxy aliases (destination, via RSAT)</li>
       </ul>
 
       <h2>Toolkit Architecture</h2>
@@ -343,7 +342,6 @@ section { scroll-margin-top: 56px; }
         <tbody>
           <tr><td>PowerShell</td><td>5.1 or 7.x</td><td>7.x recommended — supports null-coalescing <code>?.</code> operator</td></tr>
           <tr><td>ExchangeOnlineManagement</td><td>&ge; 3.0</td><td><code>Install-Module ExchangeOnlineManagement</code></td></tr>
-          <tr><td>ActiveDirectory (RSAT)</td><td>Any</td><td>Required only for <code>DestinationADEnv</code> scripts</td></tr>
         </tbody>
       </table>
 
@@ -352,7 +350,6 @@ section { scroll-margin-top: 56px; }
         <thead><tr><th>Role</th><th>Where</th><th>Required For</th></tr></thead>
         <tbody>
           <tr><td>Exchange Admin <em>or</em> Global Admin</td><td>Source &amp; Destination tenants</td><td>All <code>Get-*</code>, <code>Import-*</code>, <code>Update-*</code> scripts</td></tr>
-          <tr><td>AD Write on target OU</td><td>Destination AD</td><td><code>Remove-AllMailboxForwardingAD</code>, <code>Update-AllMailboxesProxyAliases</code></td></tr>
         </tbody>
       </table>
 
@@ -453,12 +450,6 @@ section { scroll-margin-top: 56px; }
 │   ├── Update-AllDistributionGroupAliases.ps1
 │   ├── CSVTranslator.ps1
 │   └── Remove-AllMailboxForwardingEXO.ps1
-│
-├── _legacy/                          <span class="cm"># Legacy AD scripts (M&amp;A hybrid scenarios)</span>
-│   └── DestinationADEnv/
-│   ├── Remove-AllMailboxForwardingAD.ps1
-│   ├── Remove-AllMailboxForwardingByPrefix.ps1
-│   └── Update-AllMailboxesProxyAliases.ps1
 │
 └── RegularCmds/
     └── ConvertDLtoShared.ps1</pre>
@@ -732,8 +723,8 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
         <div class="panel-body">
           <strong>Mapping file format</strong>
           The mapping file (<code>Mapping_Mailboxes_&lt;ProjectKey&gt;.csv</code>) must have exactly two columns:
-          <code>Source user email</code> and <code>Destination user email</code>. This file is also used by
-          <code>Update-AllMailboxesProxyAliases</code> in the AD phase.
+          <code>Source user email</code> and <code>Destination user email</code>. This file is used by
+          <code>Convert-CSVForDestination</code> to rewrite addresses for the destination tenant.
         </div>
       </div>
 
@@ -850,13 +841,6 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
     <span class="op">-CSVFile</span>      <span class="str">"C:\CSV\Acme\Distribution_Groups_Acme.csv"</span> <span class="op">`</span>
     <span class="op">-Domain</span>       <span class="str">"dest.com"</span></pre>
 
-      <h2>Update AD proxy aliases (destination AD only)</h2>
-      <p>Requires RSAT and AD write permissions on the target OU. Load AD scripts first.</p>
-<pre>
-<span class="fn">Update-AllMailboxesProxyAliases</span> <span class="op">`</span>
-    <span class="op">-MappingCSV</span>   <span class="str">"C:\CSV\Acme\Mapping_Mailboxes_Acme.csv"</span> <span class="op">`</span>
-    <span class="op">-Domain</span>       <span class="str">"dest.com"</span></pre>
-
       <h2>Or run all update steps at once</h2>
 <pre><span class="fn">Start-Migration</span> <span class="op">-ConfigPath</span> <span class="str">".\Acme-Config.ps1"</span> <span class="op">-Phase</span> update</pre>
     </section>
@@ -928,19 +912,7 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
 <span class="cm"># Live run:</span>
 <span class="fn">Remove-AllMailboxForwardingEXO</span> <span class="op">-CSVFile</span> <span class="var">$mailboxCsv</span> <span class="op">-Domain</span> <span class="var">$DestDomain</span></pre>
 
-      <h2>Step 2 — Remove AD forwarding (destination AD)</h2>
-      <p>Requires RSAT. Load AD scripts first.</p>
-<pre>
-<span class="cm"># By prefix (recommended)</span>
-<span class="fn">Remove-AllMailboxForwardingByPrefix</span> <span class="op">`</span>
-    <span class="op">-WhatIf</span>
-
-<span class="cm"># By OU (alternative)</span>
-<span class="fn">Remove-AllMailboxForwardingAD</span> <span class="op">`</span>
-    <span class="op">-OUPath</span>       <span class="str">"OU=Users,DC=contoso,DC=com"</span> <span class="op">`</span>
-    <span class="op">-WhatIf</span></pre>
-
-      <h2>Step 3 — Update DNS records</h2>
+      <h2>Step 2 — Update DNS records</h2>
       <p>Update MX, SPF, Autodiscover, and DKIM records to point to the destination tenant.
       Reference the exported DNS records from Phase 2 for the expected values.</p>
       <table>
@@ -977,15 +949,9 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
       <ul class="checklist">
         <li><span class="check">☐</span><span>Revert DNS records to point back to source tenant (MX, SPF, Autodiscover)</span></li>
         <li><span class="check">☐</span><span>Re-enable forwarding on source EXO mailboxes if removed</span></li>
-        <li><span class="check">☐</span><span>Re-enable AD forwarding attributes if removed</span></li>
         <li><span class="check">☐</span><span>Notify users of temporary disruption</span></li>
         <li><span class="check">☐</span><span>Investigate root cause before rescheduling cutover</span></li>
       </ul>
-
-      <h2>Re-enable AD forwarding (example)</h2>
-<pre><span class="cm"># Set targetAddress back on affected AD users</span>
-<span class="cm"># See _legacy/DestinationADEnv — AD forwarding scripts are not part of the generic toolkit</span>
-    <span class="fn">Set-ADUser</span> <span class="op">-Add</span> @{ targetAddress = <span class="str">"SMTP:user@source.com"</span> }</pre>
 
       <div class="panel panel-info">
         <span class="panel-icon">ℹ️</span>
@@ -1079,16 +1045,6 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
         </tbody>
       </table>
 
-      <h2>_legacy/DestinationADEnv — Active Directory Scripts</h2>
-      <table>
-        <thead><tr><th>Script</th><th>Function</th><th>Description</th><th>WhatIf</th></tr></thead>
-        <tbody>
-          <tr><td><code>Remove-AllMailboxForwardingAD.ps1</code></td><td><code>Remove-AllMailboxForwardingAD</code></td><td>Clear forwarding attrs by OU</td><td>✓</td></tr>
-          <tr><td><code>Remove-AllMailboxForwardingByPrefix.ps1</code></td><td><code>Remove-AllMailboxForwardingByPrefix</code></td><td>Clear forwarding attrs by prefix</td><td>✓</td></tr>
-          <tr><td><code>Update-AllMailboxesProxyAliases.ps1</code></td><td><code>Update-AllMailboxesProxyAliases</code></td><td>Update proxyAddresses in AD</td><td>✓</td></tr>
-        </tbody>
-      </table>
-
       <h2>RegularCmds — Utilities</h2>
       <table>
         <thead><tr><th>Script</th><th>Function</th><th>Description</th><th>WhatIf</th></tr></thead>
@@ -1155,7 +1111,7 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
       </table>
 
       <h2>Mapping_Mailboxes_&lt;ProjectKey&gt;.csv</h2>
-      <p>Used by <code>Convert-CSVForDestination</code> and <code>Update-AllMailboxesProxyAliases</code>.</p>
+      <p>Used by <code>Convert-CSVForDestination</code> to rewrite SMTP addresses from source to destination domain.</p>
       <table>
         <thead><tr><th>Column</th><th>Required</th><th>Notes</th></tr></thead>
         <tbody>

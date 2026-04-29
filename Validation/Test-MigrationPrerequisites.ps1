@@ -10,7 +10,6 @@
     Checks performed:
       - ExchangeOnlineManagement module installed (version >= 3.0)
       - Active Exchange Online session
-      - ActiveDirectory module available (Warning if absent — required only for AD scripts)
       - $CSVFolder directory exists and is writable
       - Project CSV subfolder exists (created automatically if missing)
       - Disk space >= 100 MB on the $CSVFolder drive
@@ -39,8 +38,7 @@
 .NOTES
     Author   : Gabriel Amorim
     Version  : 2.0
-    Requires : ExchangeOnlineManagement >= 3.0 (for EXO checks)
-               RSAT ActiveDirectory module (optional)
+    Requires : ExchangeOnlineManagement >= 3.0
 #>
 
 function Test-MigrationPrerequisites {
@@ -102,15 +100,7 @@ function Test-MigrationPrerequisites {
             $results.Add((New-TestResult 'EXO Session Active' 'Fail' "Error checking session: $($_.Exception.Message)"))
         }
 
-        # 3. ActiveDirectory module (warning only)
-        $adModule = Get-Module -ListAvailable -Name ActiveDirectory | Select-Object -First 1
-        if ($adModule) {
-            $results.Add((New-TestResult 'ActiveDirectory Module' 'Pass' "Version $($adModule.Version) installed"))
-        } else {
-            $results.Add((New-TestResult 'ActiveDirectory Module' 'Warning' 'Module not found. Required only for DestinationADEnv scripts.'))
-        }
-
-        # 4. CSVFolder exists and is writable
+        # 3. CSVFolder exists and is writable
         if (Test-Path $CSVFolder -PathType Container) {
             try {
                 $testFile = Join-Path $CSVFolder ".writetest_$(Get-Random)"
@@ -124,7 +114,7 @@ function Test-MigrationPrerequisites {
             $results.Add((New-TestResult 'CSVFolder Exists' 'Fail' "Directory not found: $CSVFolder"))
         }
 
-        # 5. Project subfolder (auto-create)
+        # 4. Project subfolder (auto-create)
         $projectFolder = Join-Path $CSVFolder $ProjectKey
         if (Test-Path $projectFolder) {
             $results.Add((New-TestResult 'Project CSV Subfolder' 'Pass' $projectFolder))
@@ -137,7 +127,7 @@ function Test-MigrationPrerequisites {
             }
         }
 
-        # 6. Disk space >= 100 MB
+        # 5. Disk space >= 100 MB
         try {
             $drive = Split-Path -Qualifier $CSVFolder
             $disk  = Get-PSDrive -Name ($drive.TrimEnd(':')) -ErrorAction Stop
@@ -151,7 +141,7 @@ function Test-MigrationPrerequisites {
             $results.Add((New-TestResult 'Disk Space >= 100 MB' 'Warning' "Could not determine free space: $($_.Exception.Message)"))
         }
 
-        # 7. Expected source CSV files (warnings per missing file)
+        # 6. Expected source CSV files (warnings per missing file)
         $expectedFiles = @(
             "Mailboxes_$ProjectKey.csv"
             "Shared_Mailboxes_$ProjectKey.csv"
