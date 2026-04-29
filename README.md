@@ -27,6 +27,7 @@ The workflow is driven entirely by CSV files. Every `Get-*` script exports to CS
 |---|---|---|
 | PowerShell | 5.1 or 7.x | 7.x recommended for null-coalescing `?.` operator |
 | ExchangeOnlineManagement | >= 3.0 | `Install-Module ExchangeOnlineManagement` |
+| Microsoft.Graph | Any | `Install-Module Microsoft.Graph` — required only for `Get-AllLicensingReport` |
 | Exchange Online role | Exchange Admin or Global Admin | Required to create/modify mailboxes |
 
 ---
@@ -87,7 +88,8 @@ V2/
 │
 ├── Validation/
 │   ├── Test-MigrationPrerequisites.ps1  # Pre-flight environment checks
-│   └── Get-MigrationReport.ps1         # Post-migration validation report
+│   ├── Get-MigrationReport.ps1         # Post-migration validation report
+│   └── Get-AllLicensingReport.ps1      # Licensing & mailbox status report (Graph)
 │
 ├── SourceEnv/                        # Export scripts (read from source EXO)
 │   ├── Get-AllMailboxes.ps1
@@ -112,6 +114,7 @@ V2/
 │   ├── Get-AllAddressBookPolicies.ps1
 │   ├── Get-AllEmailAddressPolicies.ps1 # report only
 │   ├── Get-AllOwaMailboxPolicies.ps1   # report only
+│   ├── Set-AllMailboxForwardingEXO.ps1 # sets forwarding origin → destination
 │   ├── Get-CSVMailboxes.ps1
 │   ├── Get-CSVSharedMailboxes.ps1
 │   ├── Get-CSVResourceMailboxes.ps1
@@ -161,6 +164,7 @@ V2/
 |---|---|---|
 | `Test-MigrationPrerequisites.ps1` | `Test-MigrationPrerequisites` | Checks EXO connection, modules, disk space, CSV presence |
 | `Get-MigrationReport.ps1` | `Get-MigrationReport` | Compares source CSVs vs destination objects, outputs report CSV |
+| `Get-AllLicensingReport.ps1` | `Get-AllLicensingReport` | Reports licensing and mailbox status for destination users (requires Microsoft.Graph) |
 
 ### SourceEnv
 
@@ -188,6 +192,7 @@ V2/
 | `Get-AllAddressBookPolicies.ps1` | `Get-AllAddressBookPolicies` | `Address_Book_Policies_<ProjectKey>.csv` |
 | `Get-AllEmailAddressPolicies.ps1` | `Get-AllEmailAddressPolicies` | `Email_Address_Policies_<ProjectKey>.csv` *(report only)* |
 | `Get-AllOwaMailboxPolicies.ps1` | `Get-AllOwaMailboxPolicies` | `OWA_Mailbox_Policies_<ProjectKey>.csv` *(report only)* |
+| `Set-AllMailboxForwardingEXO.ps1` | `Set-AllMailboxForwardingEXO` | *(no CSV output — sets forwarding on source mailboxes)* |
 | `Get-CSVMailboxes.ps1` | `Get-CSVMailboxes` | `Mailboxes_<ProjectKey>.csv` |
 | `Get-CSVSharedMailboxes.ps1` | `Get-CSVSharedMailboxes` | `Shared_Mailboxes_<ProjectKey>.csv` |
 | `Get-CSVResourceMailboxes.ps1` | `Get-CSVResourceMailboxes` | `Resource_Mailboxes_<ProjectKey>.csv` |
@@ -439,6 +444,8 @@ Import-AllSharedMailboxes -CSVFile "C:\CSV\Acme\Shared_Mailboxes_Acme.csv" `
 ### V2.1 — 2026
 - Added 15 new SourceEnv scripts: `Get-AllMailEnabledSecurityGroups`, `Get-AllDynamicDistributionGroups`, `Get-AllRoomLists`, `Get-AllUnifiedGroups`, `Get-AllAutoReplyConfig`, `Get-AllSendOnBehalf`, `Get-AllLitigationHold`, `Get-AllRetentionPolicies`, `Get-AllTransportRules`, `Get-AllConnectors`, `Get-AllAntiSpamPolicies`, `Get-AllDkimConfig`, `Get-AllAddressBookPolicies`, `Get-AllEmailAddressPolicies`, `Get-AllOwaMailboxPolicies`
 - Added 7 new DestinationEnv scripts: `Import-AllMailEnabledSecurityGroups`, `Import-AllDynamicDistributionGroups`, `Import-AllRoomLists`, `Import-AllLitigationHold`, `Import-AllTransportRules`, `Import-AllConnectors`, `Import-AllAddressBookPolicies`
+- Added `Set-AllMailboxForwardingEXO` (SourceEnv) — configures forwarding on source mailboxes to destination with `DeliverToMailboxAndForward $true` for co-existence period
+- Added `Get-AllLicensingReport` (Validation) — reports licensing and mailbox provisioning status for destination users via Microsoft Graph
 - Transport rules and connectors created in Disabled state by default; use `-Enabled` to activate on creation
 - Dynamic distribution groups with custom `RecipientFilter` emit a warning to review after import
 - `Load-Scripts.ps1` updated to include all new scripts
