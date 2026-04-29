@@ -10,7 +10,7 @@
       - FullAccessUsers, SendAsUsers, and Members remapped to destination addresses
         using the mapping file (falls back to the original address if not found)
 
-    This function is the V2 refactor of CSVTranslator.ps1 (previously a script-mode file).
+    This function is the refactored version of CSVTranslator.ps1 (previously a script-mode file).
     The Convert-Emails helper has been moved from the loop scope to the begin block.
 
 .PARAMETER SourceCsv

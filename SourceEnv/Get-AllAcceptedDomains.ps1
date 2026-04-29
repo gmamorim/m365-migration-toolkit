@@ -7,7 +7,7 @@
     Name, DomainName, DomainType, and Default flag.
 
     This function is promoted from the .Imported/Functions directory and standardised
-    to the V2 pattern. It is useful for cross-referencing domains before running
+    to the toolkit pattern. It is useful for cross-referencing domains before running
     Import-AllAcceptedDomains on the destination tenant.
 
     Output: <OutputCSV>\<ProjectKey>\Accepted_Domains_<ProjectKey>.csv

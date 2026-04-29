@@ -6,7 +6,7 @@
     Reads a list of PrimarySmtpAddress values from the input CSV and retrieves
     distribution group details and member lists for each.
 
-    Members are joined with semicolons (';') — consistent with all other V2 scripts.
+    Members are joined with semicolons (';') — consistent with all other scripts.
 
     Output: <OutputCSV>\<ProjectKey>\Distribution_Groups_<ProjectKey>.csv
 

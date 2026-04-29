@@ -1,6 +1,6 @@
-# M365 Migration V2 — PowerShell Toolkit
+# M365 Migration Toolkit — PowerShell
 
-A structured PowerShell toolkit for tenant-to-tenant Microsoft 365 migrations. This is V2, a complete rewrite of the original scripts applying a uniform standard, persistent logging, pre-flight validation, and a safe orchestration workflow.
+A structured PowerShell toolkit for tenant-to-tenant Microsoft 365 migrations, applying a uniform standard, persistent logging, pre-flight validation, and a safe orchestration workflow.
 
 ---
 
@@ -79,7 +79,7 @@ Get-MigrationReport -CSVFolder "C:\CSV" -ProjectKey "Acme" `
 ## Folder Structure
 
 ```
-V2/
+M365-Migration-Toolkit/
 ├── Management/
 │   ├── Load-Scripts.ps1              # Dot-sources all functions
 │   ├── New-ProjectConfig.ps1         # Generates project config from template
@@ -154,7 +154,7 @@ V2/
 
 | Script | Function | Description |
 |---|---|---|
-| `Load-Scripts.ps1` | *(dot-source)* | Loads all V2 functions into session |
+| `Load-Scripts.ps1` | *(dot-source)* | Loads all migration functions into session |
 | `New-ProjectConfig.ps1` | `New-ProjectConfig` | Creates `<ProjectKey>-Config.ps1` from template |
 | `Start-Migration.ps1` | *(orchestrator)* | Runs phases: validate, export, import, update, cleanup, report, full |
 
@@ -423,7 +423,7 @@ Import-AllSharedMailboxes -CSVFile "C:\CSV\Acme\Shared_Mailboxes_Acme.csv" `
 
 ---
 
-## Bugs Fixed in V2
+## Bugs Fixed
 
 | Script | Bug | Fix |
 |---|---|---|

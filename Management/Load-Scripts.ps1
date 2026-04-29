@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Dot-sources all V2 migration functions into the current PowerShell session.
+    Dot-sources all migration functions into the current PowerShell session.
 
 .DESCRIPTION
-    Imports all function definitions from the V2 script library using paths
+    Imports all function definitions from the script library using paths
     relative to this file's location ($PSScriptRoot). No environment-specific
     variable files are required — just dot-source this loader before calling
     any migration function.
@@ -14,12 +14,12 @@
     Also loads RegularCmds utility scripts (e.g. ConvertDLtoShared).
 
 .EXAMPLE
-    . .\V2\Management\Load-Scripts.ps1
+    . .\Management\Load-Scripts.ps1
 
     Loads all core migration functions (SourceEnv + DestinationEnv).
 
 .EXAMPLE
-    . .\V2\Management\Load-Scripts.ps1 -IncludeRegularCmds
+    . .\Management\Load-Scripts.ps1 -IncludeRegularCmds
 
     Loads all scripts including utility functions.
 
@@ -33,7 +33,7 @@ param (
     [switch]$IncludeRegularCmds
 )
 
-$root = $PSScriptRoot | Split-Path   # V2 root
+$root = $PSScriptRoot | Split-Path   # toolkit root
 
 # ---- Management helpers (load first — other scripts depend on Resolve-UniqueAlias) ----
 . (Join-Path $PSScriptRoot 'Resolve-UniqueAlias.ps1')
@@ -63,6 +63,7 @@ $sourceScripts = @(
     'Get-AllAddressBookPolicies.ps1'
     'Get-AllEmailAddressPolicies.ps1'
     'Get-AllOwaMailboxPolicies.ps1'
+    'Set-AllMailboxForwardingEXO.ps1'
     'Get-CSVMailboxes.ps1'
     'Get-CSVSharedMailboxes.ps1'
     'Get-CSVResourceMailboxes.ps1'
@@ -100,10 +101,11 @@ foreach ($s in $destScripts) {
 # ---- Validation ----
 . (Join-Path $root 'Validation\Test-MigrationPrerequisites.ps1')
 . (Join-Path $root 'Validation\Get-MigrationReport.ps1')
+. (Join-Path $root 'Validation\Get-AllLicensingReport.ps1')
 
 # ---- RegularCmds (optional) ----
 if ($IncludeRegularCmds) {
     . (Join-Path $root 'RegularCmds\ConvertDLtoShared.ps1')
 }
 
-Write-Host "[Load-Scripts] All V2 migration functions loaded." -ForegroundColor DarkGray
+Write-Host "[Load-Scripts] All migration functions loaded." -ForegroundColor DarkGray

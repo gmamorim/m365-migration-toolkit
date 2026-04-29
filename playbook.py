@@ -244,7 +244,7 @@ section { scroll-margin-top: 56px; }
   <div id="sidebar-header">
     <div class="product">M365 Migration</div>
     <div class="title">Migration Playbook</div>
-    <div class="version">V2 · PowerShell Toolkit</div>
+    <div class="version">PowerShell Toolkit</div>
   </div>
   <nav>
     <div class="nav-group">Introduction</div>
@@ -285,8 +285,7 @@ section { scroll-margin-top: 56px; }
       <div class="page-header">
         <h1>M365 Migration Playbook</h1>
         <div class="meta">
-          <span class="lozenge lozenge-info">V2</span>&nbsp;
-          <span class="lozenge lozenge-neutral">Tenant-to-Tenant</span>&nbsp;
+          <span class="lozenge lozenge-info">Tenant-to-Tenant</span>&nbsp;
           <span class="lozenge lozenge-success">PowerShell</span>
         </div>
       </div>
@@ -296,8 +295,8 @@ section { scroll-margin-top: 56px; }
         <div class="panel-body">
           <strong>Purpose</strong>
           This playbook guides you through a complete tenant-to-tenant Microsoft 365 migration
-          using the V2 PowerShell toolkit. Follow each phase in order. Every phase maps directly
-          to scripts in the <code>V2/</code> folder.
+          using the PowerShell toolkit. Follow each phase in order. Every phase maps directly
+          to scripts in the toolkit folders.
         </div>
       </div>
 
@@ -392,7 +391,7 @@ section { scroll-margin-top: 56px; }
                            Get-MigrationReport  ──────────────────────────────► Report CSV</pre>
 
       <h2>Folder Structure</h2>
-<pre>V2/
+<pre>M365-Migration-Toolkit/
 ├── Management/
 │   ├── Load-Scripts.ps1              <span class="cm"># Dot-sources all functions into session</span>
 │   ├── New-ProjectConfig.ps1         <span class="cm"># Generates project config from template</span>
@@ -483,13 +482,13 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
       <p><span class="lozenge lozenge-neutral">One-time setup</span>&nbsp; Run once per migration project.</p>
 
       <h2>Step 1 — Load all functions</h2>
-      <p>Dot-source <code>Load-Scripts.ps1</code> to bring all V2 functions into your PowerShell session.</p>
+      <p>Dot-source <code>Load-Scripts.ps1</code> to bring all migration functions into your PowerShell session.</p>
 <pre><span class="cm"># EXO scripts only (most common)</span>
-<span class="op">.</span> <span class="op">.\</span>V2\Management\Load-Scripts.ps1
+<span class="op">.</span> <span class="op">.\</span>Management\Load-Scripts.ps1
 
 
 <span class="cm"># Include utility scripts (ConvertDLtoShared)</span>
-<span class="op">.</span> <span class="op">.\</span>V2\Management\Load-Scripts.ps1 <span class="op">-IncludeRegularCmds</span></pre>
+<span class="op">.</span> <span class="op">.\</span>Management\Load-Scripts.ps1 <span class="op">-IncludeRegularCmds</span></pre>
 
       <div class="panel panel-info">
         <span class="panel-icon">ℹ️</span>
