@@ -1,2 +1,5 @@
 # macOS
 .DS_Store
+
+# Kiro (local IDE config — not for version control)
+.kiro/
