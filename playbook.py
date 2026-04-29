@@ -364,8 +364,8 @@ section { scroll-margin-top: 56px; }
         <li><span class="check">☐</span><span>Exchange Admin credentials available for <strong>destination</strong> tenant</span></li>
         <li><span class="check">☐</span><span>CSV output folder created (e.g. <code>C:\CSV</code>) with sufficient disk space</span></li>
         <li><span class="check">☐</span><span>Project key agreed (e.g. <code>Acme</code>) — used in all file names</span></li>
-        <li><span class="check">☐</span><span>Country code agreed (e.g. <code>ES1</code>) — used as alias prefix in destination</span></li>
-        <li><span class="check">☐</span><span>Destination domain known (e.g. <code>dest.com</code>)</span></li>
+        <li><span class="check">☐</span><span>Alias prefix agreed (e.g. <code>acme</code>) — optional, used as prefix in destination aliases</span></li>
+        <li><span class="check">☐</span><span>Destination domain known (e.g. <code>amorim.rocks</code>)</span></li>
         <li><span class="check">☐</span><span>Cutover date agreed with business stakeholders</span></li>
       </ul>
 
@@ -457,7 +457,7 @@ section { scroll-margin-top: 56px; }
 ├── _legacy/                          <span class="cm"># Legacy AD scripts (M&amp;A hybrid scenarios)</span>
 │   └── DestinationADEnv/
 │   ├── Remove-AllMailboxForwardingAD.ps1
-│   ├── Remove-AllMailboxForwardingByCountryCode.ps1
+│   ├── Remove-AllMailboxForwardingByPrefix.ps1
 │   └── Update-AllMailboxesProxyAliases.ps1
 │
 └── RegularCmds/
@@ -931,8 +931,8 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
       <h2>Step 2 — Remove AD forwarding (destination AD)</h2>
       <p>Requires RSAT. Load AD scripts first.</p>
 <pre>
-<span class="cm"># By country code (recommended)</span>
-<span class="fn">Remove-AllMailboxForwardingByCountryCode</span> <span class="op">`</span>
+<span class="cm"># By prefix (recommended)</span>
+<span class="fn">Remove-AllMailboxForwardingByPrefix</span> <span class="op">`</span>
     <span class="op">-WhatIf</span>
 
 <span class="cm"># By OU (alternative)</span>
@@ -1084,7 +1084,7 @@ $LogFolder\Summary_&lt;ProjectKey&gt;_&lt;yyyyMMdd_HHmm&gt;.csv</pre>
         <thead><tr><th>Script</th><th>Function</th><th>Description</th><th>WhatIf</th></tr></thead>
         <tbody>
           <tr><td><code>Remove-AllMailboxForwardingAD.ps1</code></td><td><code>Remove-AllMailboxForwardingAD</code></td><td>Clear forwarding attrs by OU</td><td>✓</td></tr>
-          <tr><td><code>Remove-AllMailboxForwardingByCountryCode.ps1</code></td><td><code>Remove-AllMailboxForwardingByCountryCode</code></td><td>Clear forwarding attrs by country code</td><td>✓</td></tr>
+          <tr><td><code>Remove-AllMailboxForwardingByPrefix.ps1</code></td><td><code>Remove-AllMailboxForwardingByPrefix</code></td><td>Clear forwarding attrs by prefix</td><td>✓</td></tr>
           <tr><td><code>Update-AllMailboxesProxyAliases.ps1</code></td><td><code>Update-AllMailboxesProxyAliases</code></td><td>Update proxyAddresses in AD</td><td>✓</td></tr>
         </tbody>
       </table>
