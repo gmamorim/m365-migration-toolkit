@@ -20,7 +20,7 @@
     Project key used to locate CSV files and build destination alias patterns.
 
 .PARAMETER Domain
-    Destination tenant SMTP domain (e.g. "dest.com").
+    Destination tenant SMTP domain (e.g. "amorim.rocks").
 
 .PARAMETER Prefix
     Optional. Prefix used when objects were created (must match what was used in Import-*).
@@ -32,7 +32,7 @@
     Optional. Full path to a log file.
 
 .EXAMPLE
-    Get-MigrationReport -CSVFolder "C:\CSV" -ProjectKey "Contoso" -Domain "dest.com"
+    Get-MigrationReport -CSVFolder "C:\CSV" -ProjectKey "Contoso" -Domain "amorim.rocks"
 
     Validates the Contoso migration and saves a report to C:\CSV\Contoso\.
 

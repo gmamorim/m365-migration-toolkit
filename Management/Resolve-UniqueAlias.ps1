@@ -9,8 +9,8 @@
     is found.
 
     Alias format: <sanitisedLocalPart>@<Domain>
-    Example: invoices@contoso.com -> invoices@dest.com (free)
-             john.smith@contoso.com -> john.smith@dest.com (taken) -> john.smith2@dest.com
+    Example: invoices@acme.com -> invoices@amorim.rocks (free)
+             john.smith@acme.com -> john.smith@amorim.rocks (taken) -> john.smith2@amorim.rocks
 
 .PARAMETER SourceAddress
     The source PrimarySmtpAddress. The local part is used as the alias base.
@@ -23,12 +23,12 @@
     When provided, the alias becomes: <Prefix>-<localPart>@<Domain>
 
 .EXAMPLE
-    Resolve-UniqueAlias -SourceAddress "invoices@contoso.com" -Domain "dest.com"
-    # Returns: invoices@dest.com  (or invoices2@dest.com if taken)
+    Resolve-UniqueAlias -SourceAddress "invoices@acme.com" -Domain "amorim.rocks"
+    # Returns: invoices@amorim.rocks  (or invoices2@amorim.rocks if taken)
 
 .EXAMPLE
-    Resolve-UniqueAlias -SourceAddress "john.smith@contoso.com" -Domain "dest.com" -Prefix "sales"
-    # Returns: sales-john.smith@dest.com  (or sales-john.smith2@dest.com if taken)
+    Resolve-UniqueAlias -SourceAddress "john.smith@acme.com" -Domain "amorim.rocks" -Prefix "sales"
+    # Returns: sales-john.smith@amorim.rocks  (or sales-john.smith2@amorim.rocks if taken)
 
 .OUTPUTS
     [string] The resolved unique alias (full SMTP address).

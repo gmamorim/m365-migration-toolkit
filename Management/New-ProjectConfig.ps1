@@ -12,10 +12,10 @@
     names and directory names (e.g. "Contoso", "Fabrikam").
 
 .PARAMETER Domain
-    Source tenant primary SMTP domain (e.g. "contoso.com").
+    Source tenant primary SMTP domain (e.g. "acme.com").
 
 .PARAMETER DestinationDomain
-    Destination tenant SMTP domain (e.g. "dest.com").
+    Destination tenant SMTP domain (e.g. "amorim.rocks").
 
 .PARAMETER CSVFolder
     Base directory path where all CSV exports and imports are stored.
@@ -32,14 +32,14 @@
     Overwrites an existing config file for the same ProjectKey without prompting.
 
 .EXAMPLE
-    New-ProjectConfig -ProjectKey "Contoso" -Domain "contoso.com" `
-        -DestinationDomain "dest.com" -CSVFolder "C:\CSV"
+    New-ProjectConfig -ProjectKey "Contoso" -Domain "acme.com" `
+        -DestinationDomain "amorim.rocks" -CSVFolder "C:\CSV"
 
     Creates "Contoso-Config.ps1" with no alias prefix.
 
 .EXAMPLE
-    New-ProjectConfig -ProjectKey "Fabrikam" -Domain "fabrikam.com" `
-        -DestinationDomain "dest.com" -CSVFolder "C:\CSV" -Prefix "fab" -Force
+    New-ProjectConfig -ProjectKey "Fabrikam" -Domain "acme.com" `
+        -DestinationDomain "amorim.rocks" -CSVFolder "C:\CSV" -Prefix "fab" -Force
 
     Creates or overwrites "Fabrikam-Config.ps1" with alias prefix "fab".
 

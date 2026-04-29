@@ -11,7 +11,7 @@
     Full path to the input CSV. Required columns: DisplayName, PrimarySmtpAddress.
 
 .PARAMETER Domain
-    Destination tenant SMTP domain (e.g. "contoso.com").
+    Destination tenant SMTP domain (e.g. "acme.com").
 
 .PARAMETER Company
     Optional. Company name prepended to DisplayName.
@@ -23,10 +23,10 @@
     Optional. Full path to a log file.
 
 .EXAMPLE
-    Import-AllRoomLists -CSVFile "C:\CSV\Acme\Room_Lists_Acme.csv" -Domain "dest.com"
+    Import-AllRoomLists -CSVFile "C:\CSV\Acme\Room_Lists_Acme.csv" -Domain "amorim.rocks"
 
 .EXAMPLE
-    Import-AllRoomLists -CSVFile "C:\CSV\Acme\Room_Lists_Acme.csv" -Domain "dest.com" -WhatIf
+    Import-AllRoomLists -CSVFile "C:\CSV\Acme\Room_Lists_Acme.csv" -Domain "amorim.rocks" -WhatIf
 
 .NOTES
     Author   : Gabriel Amorim

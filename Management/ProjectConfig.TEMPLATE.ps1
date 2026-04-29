@@ -15,8 +15,8 @@
 $ProjectKey   = "{{ProjectKey}}"    # Unique key for this migration project (used in file names)
 
 # --- Domains ---
-$Domain       = "{{Domain}}"        # Source tenant primary domain (e.g. contoso.com)
-$DestDomain   = "{{DestinationDomain}}" # Destination tenant domain (e.g. dest.com)
+$Domain       = "{{Domain}}"        # Source tenant primary domain (e.g. acme.com)
+$DestDomain   = "{{DestinationDomain}}" # Destination tenant domain (e.g. amorim.rocks)
 
 # --- Optional alias prefix ---
 # Leave empty for no prefix. When set, destination aliases become: <Prefix>-<localPart>@<DestDomain>

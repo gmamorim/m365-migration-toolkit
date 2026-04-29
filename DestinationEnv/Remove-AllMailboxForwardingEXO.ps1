@@ -27,11 +27,11 @@
 
 .EXAMPLE
     Remove-AllMailboxForwardingEXO -CSVFile "C:\CSV\Contoso\Mailboxes_Contoso.csv" `
-        -Domain "dest.com"
+        -Domain "amorim.rocks"
 
 .EXAMPLE
     Remove-AllMailboxForwardingEXO -CSVFile "C:\CSV\Contoso\Mailboxes_Contoso.csv" `
-        -Domain "dest.com" -WhatIf
+        -Domain "amorim.rocks" -WhatIf
 
     Dry-run — shows which mailboxes would have forwarding removed.
 

@@ -13,7 +13,7 @@
     Required columns: DisplayName, PrimarySmtpAddress, ResourceType.
 
 .PARAMETER Domain
-    Destination tenant SMTP domain (e.g. "contoso.com").
+    Destination tenant SMTP domain (e.g. "acme.com").
 
 .PARAMETER Company
     Optional. Company name prepended to DisplayName.
@@ -26,11 +26,11 @@
 
 .EXAMPLE
     Import-AllResourceMailboxes -CSVFile "C:\CSV\Contoso\Resource_Mailboxes_Contoso.csv" `
-        -Domain "dest.com"
+        -Domain "amorim.rocks"
 
 .EXAMPLE
     Import-AllResourceMailboxes -CSVFile "C:\CSV\Contoso\Resource_Mailboxes_Contoso.csv" `
-        -Domain "dest.com" -Company "Contoso" -WhatIf
+        -Domain "amorim.rocks" -Company "Contoso" -WhatIf
 
 .NOTES
     Author   : Gabriel Amorim

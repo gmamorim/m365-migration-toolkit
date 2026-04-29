@@ -36,10 +36,10 @@
     Optional. Full path to a log file.
 
 .EXAMPLE
-    Convert-CSVForDestination -SourceCsv "C:\CSV\Contoso\SharedMailbox_contoso.com.csv" `
+    Convert-CSVForDestination -SourceCsv "C:\CSV\Contoso\SharedMailbox_acme.com.csv" `
         -MappingCsv "C:\CSV\Contoso\Mapping_Mailboxes_Contoso.csv" `
         -OutputPath "C:\CSV\Contoso\" `
-        -Company "Contoso" -Domain "dest.com"
+        -Company "Contoso" -Domain "amorim.rocks"
 
 .NOTES
     Author   : Gabriel Amorim

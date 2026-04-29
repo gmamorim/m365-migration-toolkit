@@ -22,7 +22,7 @@
 
 .EXAMPLE
     Update-AllDistributionGroupAliases -CSVFile "C:\CSV\Contoso\Distribution_Groups_Contoso.csv" `
-        -Domain "dest.com"
+        -Domain "amorim.rocks"
 
 .NOTES
     Author   : Gabriel Amorim

@@ -13,7 +13,7 @@
     Full path to the input CSV. Required columns: DisplayName, PrimarySmtpAddress.
 
 .PARAMETER Domain
-    Destination tenant SMTP domain (e.g. "contoso.com").
+    Destination tenant SMTP domain (e.g. "acme.com").
 
 .PARAMETER Company
     Optional. Company name prepended to DisplayName.
@@ -26,11 +26,11 @@
 
 .EXAMPLE
     Import-AllMailEnabledSecurityGroups -CSVFile "C:\CSV\Acme\Mail_Enabled_Security_Groups_Acme.csv" `
-        -Domain "dest.com" -Company "Acme"
+        -Domain "amorim.rocks" -Company "Acme"
 
 .EXAMPLE
     Import-AllMailEnabledSecurityGroups -CSVFile "C:\CSV\Acme\Mail_Enabled_Security_Groups_Acme.csv" `
-        -Domain "dest.com" -WhatIf
+        -Domain "amorim.rocks" -WhatIf
 
 .NOTES
     Author   : Gabriel Amorim

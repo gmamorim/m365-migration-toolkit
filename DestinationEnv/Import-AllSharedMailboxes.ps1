@@ -18,7 +18,7 @@
     Optional columns: ForwardingAddress, ForwardingSmtpAddress, DeliverToMailboxAndForward.
 
 .PARAMETER Domain
-    Destination tenant SMTP domain (e.g. "contoso.com").
+    Destination tenant SMTP domain (e.g. "acme.com").
 
 .PARAMETER Company
     Optional. Company name prepended to DisplayName (e.g. "Contoso").
@@ -32,11 +32,11 @@
 
 .EXAMPLE
     Import-AllSharedMailboxes -CSVFile "C:\CSV\Contoso\Shared_Mailboxes_Contoso.csv" `
-        -Domain "dest.com"
+        -Domain "amorim.rocks"
 
 .EXAMPLE
     Import-AllSharedMailboxes -CSVFile "C:\CSV\Contoso\Shared_Mailboxes_Contoso.csv" `
-        -Domain "dest.com" -Company "Contoso" -WhatIf
+        -Domain "amorim.rocks" -Company "Contoso" -WhatIf
 
     Dry-run — shows what would be created without making changes.
 

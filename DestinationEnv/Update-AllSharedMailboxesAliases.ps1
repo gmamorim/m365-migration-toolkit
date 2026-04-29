@@ -24,7 +24,7 @@
 
 .EXAMPLE
     Update-AllSharedMailboxesAliases -CSVFile "C:\CSV\Contoso\Shared_Mailboxes_Contoso.csv" `
-        -Domain "dest.com"
+        -Domain "amorim.rocks"
 
 .NOTES
     Author   : Gabriel Amorim
